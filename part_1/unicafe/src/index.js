@@ -3,7 +3,11 @@ import ReactDOM from 'react-dom'
 
 const Header = props => <h1>{props.text}</h1>;
 const Button = props => <button onClick={props.onClick}>{props.text}</button>;
+
 const Stats = props => {
+  if (props.all === 0) {
+    return <p>No feedback given</p>;
+  };
   return (
     <div>
       <Stat name="good" value={props.good}/>
@@ -11,7 +15,7 @@ const Stats = props => {
       <Stat name="neutral" value={props.neutral}/>
       <Stat name="all" value={props.all}/>
       <Stat name="average" value={props.avg}/>
-      <Stat name="positive" value={props.positive}/>
+      <Stat name="positive" value={props.positive + "%"}/>
     </div>
   );
 };
@@ -22,7 +26,7 @@ const App = () => {
   const [bad, setBad] = useState(0);
   const [neutral, setNeutral] = useState(0);
   const all = good + bad + neutral;
-  const avg = ((good * 1) + (bad * (-1)) + (neutral * 0)) / all
+  const avg = (good + (-bad)) / all
   const positive = (good * 100) / all
 
   const setFeedback = (param) => {
