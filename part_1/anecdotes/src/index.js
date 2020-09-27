@@ -1,19 +1,31 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const Button = props => <button onClick={props.onClick}>{props.text}</button>;
+const Button = props => <button onClick={props.onClick}>{props.text}</button>
 
-const App = (props) => {
+const App = props => {
   const [selected, setSelected] = useState(0)
+  const arrayOfAnecdotesWithZeros = new Array(anecdotes.length).fill(0)
+  const [votes, setVotes] = useState(arrayOfAnecdotesWithZeros)
 
   const showNextAnecdote = () => {
-    const randomAnecdoteFromArray = Math.floor(Math.random() * (anecdotes.length));
-    setSelected(randomAnecdoteFromArray);
+    const randomAnecdoteFromArray = Math.floor(Math.random() * (anecdotes.length))
+    setSelected(randomAnecdoteFromArray)
+  }
+
+  const voteForAnecdote = () => {
+    const newArrayOfAnecdotes = [...votes];
+    newArrayOfAnecdotes[selected] = newArrayOfAnecdotes[selected] + 1;
+    setVotes(newArrayOfAnecdotes);
+    //console.log(newArrayOfAnecdotes)
+    //console.log(newArrayOfAnecdotes.length)
   }
 
   return (
     <div>
       <p>{props.anecdotes[selected]}</p>
+      <p>has {votes[selected]} vote/s</p>
+      <Button onClick={() => voteForAnecdote("vote")} text="vote"/>
       <Button onClick={() => showNextAnecdote("next")} text="next anecdote"/>
     </div>
   )
