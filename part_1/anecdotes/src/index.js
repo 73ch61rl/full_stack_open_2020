@@ -5,8 +5,8 @@ const Button = props => <button onClick={props.onClick}>{props.text}</button>
 
 const App = props => {
   const [selected, setSelected] = useState(0)
-  const arrayOfAnecdotesWithZeros = new Array(anecdotes.length).fill(0)
-  const [votes, setVotes] = useState(arrayOfAnecdotesWithZeros)
+  const arrayOfVotesWithZeros = new Array(anecdotes.length).fill(0)
+  const [votes, setVotes] = useState(arrayOfVotesWithZeros)
 
   const showNextAnecdote = () => {
     const randomAnecdoteFromArray = Math.floor(Math.random() * (anecdotes.length))
@@ -14,9 +14,9 @@ const App = props => {
   }
 
   const voteForAnecdote = () => {
-    const newArrayOfAnecdotes = [...votes];
-    newArrayOfAnecdotes[selected] = newArrayOfAnecdotes[selected] + 1;
-    setVotes(newArrayOfAnecdotes);
+    const newArrayOfVotes = [...votes];
+    newArrayOfVotes[selected] = newArrayOfVotes[selected] + 1;
+    setVotes(newArrayOfVotes);
     //console.log(newArrayOfAnecdotes)
     //console.log(newArrayOfAnecdotes.length)
   }
