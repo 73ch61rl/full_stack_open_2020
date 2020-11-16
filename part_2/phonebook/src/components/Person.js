@@ -9,7 +9,7 @@ const Person = (props) => (
             Number: <input value={props.newNumber} onChange={props.changePhoneNumber} />
         </div>
         <div>
-            <button type="submit">add</button>
+            <button type="submit">Add</button>
         </div>
     </form>
 )

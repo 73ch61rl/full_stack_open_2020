@@ -1,11 +1,9 @@
 import React from 'react'
 
-const Filter = ({ person }) => {
+const Filter = ({filter, changeFilter}) => {
     return (
-        <ul>
-            <li>{person.name}</li>
-        </ul>
+      <p>Filter shown with <input value={filter} onChange={changeFilter}/></p>
     )
-}
+  }
 
 export default Filter
