@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Person from './components/Person'
+import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
 
@@ -12,14 +12,14 @@ const App = () => {
   ])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
-  const [ filter, setFilter ] = useState('')
+  const [filter, setFilter] = useState('')
   const changeName = (event) => setNewName(event.target.value)
   const changePhoneNumber = (event) => setNewNumber(event.target.value)
   const handleFilterChange = (event) => setFilter(event.target.value)
 
-const nameExists = (persons, name) => {
-  return persons.filter(person => person.name === name).length > 0
-}
+  const nameExists = (persons, name) => {
+    return persons.filter(person => person.name === name).length > 0
+  }
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -40,9 +40,9 @@ const nameExists = (persons, name) => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter filter={filter} changeFilter={handleFilterChange}/>
+      <Filter filter={filter} changeFilter={handleFilterChange} />
       <h2>Add a new person</h2>
-      <Person
+      <PersonForm
         addPerson={addPerson}
         changeName={changeName}
         changePhoneNumber={changePhoneNumber}
