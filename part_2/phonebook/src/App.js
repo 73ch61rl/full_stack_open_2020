@@ -15,10 +15,15 @@ const App = () => {
   const changeName = (event) => setNewName(event.target.value)
   const changePhoneNumber = (event) => setNewNumber(event.target.value)
 
+
+const nameExists = (persons, name) => {
+  return persons.filter(person => person.name === name).length > 0
+}
+
   const addPerson = (event) => {
-    //event.preventDefault()
-    if (persons.indexOf((newName) !== -1)) {
-      window.alert(`${newName} is already added to the phonebook`)
+    event.preventDefault()
+    if (nameExists(persons, newName)) {
+      window.alert(`${newName} is already added to phonebook!`)
       setNewName('')
       setNewNumber('')
     }
@@ -28,7 +33,6 @@ const App = () => {
         number: newNumber
       }
       setPersons(persons.concat(newPerson))
-
     }
   }
 
@@ -37,7 +41,7 @@ const App = () => {
       <h2>Phonebook</h2>
       <h2>Add a new person</h2>
       <Person
-        AddPerson={addPerson}
+        addPerson={addPerson}
         changeName={changeName}
         changePhoneNumber={changePhoneNumber}
         newName={newName}
