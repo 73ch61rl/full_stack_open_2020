@@ -1,11 +1,17 @@
 import React from 'react'
 
-const Person = ({ person }) => {
-    return (
-        <ol>
-            <li>{person.content}</li>
-        </ol>
-    )
-}
+const Person = (props) => (
+    <form onSubmit={props.addPerson}>
+        <div>
+            Name: <input value={props.newName} onChange={props.changeName} />
+        </div>
+        <div>
+            Number: <input value={props.newNumber} onChange={props.changePhoneNumber} />
+        </div>
+        <div>
+            <button type="submit">add</button>
+        </div>
+    </form>
+)
 
 export default Person
