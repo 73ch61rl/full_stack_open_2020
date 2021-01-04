@@ -26,27 +26,28 @@ const App = () => {
   }
 
   const updatePerson = (name) => {
-    const previousPerson = persons.find(p => p.name === name)
-    const updatedPerson = {...previousPerson, number: newNumber}
-
+    const previousPerson = persons.find(person => person.name === name)
+    const newPerson = { ...previousPerson, number: newNumber }
     personService
-      .update(updatedPerson.id, updatedPerson)
-      .then(returnedPerson => {
+      .update(newPerson.id, newPerson)
+      .then(recievedPerson => {
         setPersons(
           persons.map(
             person =>
-              person.id !== previousPerson.id ? person: returnedPerson
-            )
+              person.id !== previousPerson.id ? person : recievedPerson
           )
-        })
+        )
+      })
   }
 
   const addPerson = (event) => {
     event.preventDefault()
     if (nameExists(persons, newName)) {
-      const confirmed = window.alert(`${newName} is already added to phonebook!`)
+      const confirmed = window.confirm(`${newName} is already added to phonebook, replace the old phone number with a new one?`)
       if (confirmed) {
         updatePerson(newName)
+        setNewName('')
+        setNewNumber('')
       }
     }
     else {
@@ -54,7 +55,7 @@ const App = () => {
     }
   }
 
-  const deletePerson = removedPerson => {
+  const removePerson = removedPerson => {
     const accepted = window.confirm(`Delete ${removedPerson.name}?`)
     if (accepted) {
       personService
@@ -80,7 +81,6 @@ const App = () => {
     setNewNumber('')
   }
 
-
   return (
     <div>
       <h2>Phonebook</h2>
@@ -94,7 +94,7 @@ const App = () => {
         newNumber={newNumber}
       />
       <h2>Person names with phone numbers</h2>
-      <Persons persons={persons} filter={filter} onDestroy={deletePerson} />
+      <Persons persons={persons} filter={filter} onDestroy={removePerson} />
     </div>
   )
 }
