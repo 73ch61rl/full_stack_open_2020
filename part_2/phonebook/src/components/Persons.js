@@ -1,7 +1,7 @@
 import React from 'react'
 import PersonWithNumber from './PersonWithNumber'
 
-const Persons = ({ persons, filter }) => {
+const Persons = ({ persons, filter, onDestroy }) => {
   const ignoreCase = (person) => (
     person.name.toLowerCase().includes(
       filter.toLowerCase()
@@ -9,7 +9,7 @@ const Persons = ({ persons, filter }) => {
   )
   return (
     <ul>
-      {persons.filter(ignoreCase).map(person => <PersonWithNumber key={person.name} person={person} />)}
+      {persons.filter(ignoreCase).map(person => <PersonWithNumber key={person.name} person={person} onDestroy={onDestroy}/>)}
     </ul>
   )
 }
