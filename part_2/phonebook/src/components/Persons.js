@@ -9,7 +9,7 @@ const Persons = ({ persons, filter, onDestroy }) => {
   )
   return (
     <ul>
-      {persons.filter(ignoreCase).map(person => <PersonWithNumber key={person.name} person={person} onDestroy={onDestroy}/>)}
+      {persons.filter(ignoreCase).map(person => <PersonWithNumber key={person.name} person={person} onDestroy={onDestroy} />)}
     </ul>
   )
 }

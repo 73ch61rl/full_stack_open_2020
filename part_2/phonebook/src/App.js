@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
-import personService from './services/PersonsService'
+import PersonService from './services/PersonsService'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -12,23 +13,29 @@ const App = () => {
   const changeName = (event) => setNewName(event.target.value)
   const changePhoneNumber = (event) => setNewNumber(event.target.value)
   const changeFilter = (event) => setFilter(event.target.value)
+  const [message, setMessage] = useState(null)
+
+  function nameExists(persons, name) {
+    return persons.filter(person => person.name === name).length > 0
+  }
+
+  const emptyNameAndPhoneFields = () => {
+    setNewName('');
+    setNewNumber('');
+  };
 
   useEffect(() => {
-    personService
+    PersonService
       .getAll('')
       .then(persons => {
         setPersons(persons)
       })
   }, [])
 
-  function nameExists(persons, name) {
-    return persons.filter(person => person.name === name).length > 0
-  }
-
   const updatePerson = (name) => {
     const previousPerson = persons.find(person => person.name === name)
     const newPerson = { ...previousPerson, number: newNumber }
-    personService
+    PersonService
       .update(newPerson.id, newPerson)
       .then(recievedPerson => {
         setPersons(
@@ -37,17 +44,20 @@ const App = () => {
               person.id !== previousPerson.id ? person : recievedPerson
           )
         )
+        setMessage({ text: `${newPerson.name} was updated.`, isError: false })
+        setTimeout(() => {
+          setMessage(null)
+        }, 3000)
       })
   }
 
   const addPerson = (event) => {
     event.preventDefault()
     if (nameExists(persons, newName)) {
-      const confirmed = window.confirm(`${newName} is already added to phonebook, replace the old phone number with a new one?`)
+      const confirmed = window.confirm(`${newName} is already added to a phonebook, replace the old phone number with a new one?`)
       if (confirmed) {
         updatePerson(newName)
-        setNewName('')
-        setNewNumber('')
+        emptyNameAndPhoneFields()
       }
     }
     else {
@@ -58,9 +68,21 @@ const App = () => {
   const removePerson = removedPerson => {
     const accepted = window.confirm(`Delete ${removedPerson.name}?`)
     if (accepted) {
-      personService
+      PersonService
         .destroy(removedPerson.id)
         .then(() => {
+          setPersons(persons.filter(person => person.id !== removedPerson.id))
+          setMessage({ text: `${removedPerson.name} was deleted.`, isError: false })
+          setTimeout(() => {
+            setMessage(null)
+          }, 4000)
+        })
+        .catch(error => {
+          setMessage({ text: `${removedPerson.name} was already removed from the server!`, isError: true })
+          console.log(error)
+          setTimeout(() => {
+            setMessage(null)
+          }, 4000)
           setPersons(persons.filter(person => person.id !== removedPerson.id))
         })
     }
@@ -71,19 +93,22 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-
-    personService
+    PersonService
       .create(newPerson)
       .then(newPerson => {
         setPersons(persons.concat(newPerson))
+        setMessage({ text: `${newPerson.name} is added to the list.`, isError: false })
+        setTimeout(() => {
+          setMessage(null)
+        }, 4000)
       })
-    setNewName('')
-    setNewNumber('')
+    emptyNameAndPhoneFields()
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} setMessage={setMessage} />
       <Filter filter={filter} changeFilter={changeFilter} />
       <h2>Add a new person</h2>
       <PersonForm
